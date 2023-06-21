@@ -11,7 +11,7 @@ base = declarative_base()
 
 class Documents(base):
     __tablename__ = 'documents'
-    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+    text = sqlalchemy.Column(sqlalchemy.TEXT)
+    created_date = sqlalchemy.Column(sqlalchemy.DATETIME)
     rubrics = sqlalchemy.Column(sqlalchemy.String(100))
-    text = sqlalchemy.Column(sqlalchemy.TEXT, nullable=False)
-    created_data = sqlalchemy.Column(sqlalchemy.DATE, nullable=False, default=datetime.date.today)
