@@ -15,3 +15,8 @@ class Documents(base):
     text = sqlalchemy.Column(sqlalchemy.TEXT)
     created_date = sqlalchemy.Column(sqlalchemy.DATETIME)
     rubrics = sqlalchemy.Column(sqlalchemy.String(100))
+
+    def __init__(self, text, created_date, rubrics):
+        self.text = text
+        self.created_date = created_date
+        self.rubrics = rubrics
