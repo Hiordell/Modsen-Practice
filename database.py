@@ -1,5 +1,6 @@
 import datetime
 
+import fastapi
 import sqlalchemy
 from sqlalchemy.orm import declarative_base
 
@@ -13,10 +14,9 @@ class Documents(base):
     __tablename__ = 'documents'
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     text = sqlalchemy.Column(sqlalchemy.TEXT)
-    created_date = sqlalchemy.Column(sqlalchemy.DATETIME)
+    created_date = sqlalchemy.Column(sqlalchemy.DATETIME, default=datetime.datetime.utcnow)
     rubrics = sqlalchemy.Column(sqlalchemy.String(100))
 
-    def __init__(self, text, created_date, rubrics):
-        self.text = text
-        self.created_date = created_date
-        self.rubrics = rubrics
+    def __init__(self, body: fastapi.Body):
+        self.text = body["text"]
+        self.rubrics = body["rubrics"]
