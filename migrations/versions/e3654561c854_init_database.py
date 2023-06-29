@@ -21,7 +21,7 @@ def upgrade() -> None:
     op.create_table('documents',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('text', sa.TEXT(), nullable=True),
-    sa.Column('created_date', sa.DATETIME(), nullable=True),
+    sa.Column('created_date', sa.TIMESTAMP(), nullable=True),
     sa.Column('rubrics', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )

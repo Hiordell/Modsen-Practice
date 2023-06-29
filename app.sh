@@ -1,13 +1,13 @@
 #!/bin/sh
 
-if [ "$DATABASE" = "mysql" ]; then
-    echo "Waiting for mysql..."
+if [ "$DATABASE" = "postgres" ]; then
+    echo "Waiting for postgres..."
 
     while ! nc -z $DB_HOST $DB_PORT; do
         sleep 0.1
     done
 
-    echo "MySQL started"
+    echo "Postgres started"
 fi
 
 alembic upgrade head
