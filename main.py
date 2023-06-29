@@ -2,6 +2,7 @@ import fastapi
 from sqlalchemy.orm import sessionmaker
 import elastic_transport
 from elasticsearch import Elasticsearch
+from pydantic import BaseModel, Field
 
 from database import engine, Documents
 from config import ES_HOST, ES_PORT
@@ -14,6 +15,11 @@ session = s()
 es = Elasticsearch(f"http://{ES_HOST}:{ES_PORT}")
 
 
+class Document(BaseModel):
+    text: str
+    rubrics: str = Field(max_length=100)
+
+
 @app.delete("/delete-all-docs")
 async def delete_all_data():
     try:
@@ -24,7 +30,6 @@ async def delete_all_data():
         es.delete_by_query(index="documents", body={"query": {"match_all": {}}})
     except elastic_transport.ConnectionTimeout:
         session.rollback()
-
 
 
 @app.get("/elastic-search/{doc_text}")
@@ -61,9 +66,9 @@ async def delete_doc(doc_id: int):
 
 
 @app.post("/add-doc")
-async def add_doc(body=fastapi.Body()):
+async def add_doc(doc_to_add: Document):
     try:
-        doc = Documents(body)
+        doc = Documents(doc_to_add.text, doc_to_add.rubrics)
         session.add(doc)
         session.flush()
         session.refresh(doc)

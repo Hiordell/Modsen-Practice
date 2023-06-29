@@ -3,6 +3,8 @@ services:
   web:
     container_name: doc_application
     build: .
+    volumes:
+      - .:/code
     ports:
       - "8000:8000"
     env_file:
@@ -13,22 +15,18 @@ services:
       - elasticsearch
       - db
   elasticsearch:
-    container_name: elasticsearch
+    container_name: elastic
     image: elasticsearch:8.8.1
     environment:
       - xpack.security.enabled=false
       - "discovery.type=single-node"
     ports:
       - "9200:9200"
-    env_file:
-      - .env
     networks:
       - net
   db:
-    image: postgres:15.3-alpine3.18
+    image: postgres:15.3
     container_name: db_app
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
     env_file:
